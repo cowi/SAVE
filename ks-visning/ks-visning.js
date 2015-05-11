@@ -67,7 +67,7 @@ $(window).load(function() {
   });
  
   // DataTable
-  //var table = $('#example').DataTable();
+  var table = $('#example').DataTable();
 
   // Apply the search
   table.columns().eq( 0 ).each( function ( colIdx ) {
