@@ -1,0 +1,56 @@
+<body>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/ui-lightness/jquery-ui.css">
+<link href="http://beta.mygeocloud.cowi.webhouse.dk/js/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="//cdn.datatables.net/tabletools/2.2.4/css/dataTables.tableTools.css" rel="stylesheet">
+<link href="//cdn.datatables.net/responsive/1.0.6/css/dataTables.responsive.css" rel="stylesheet">
+
+<style>
+.container-full {
+  margin: 0 auto;
+  width: 100%;
+  padding:0 1%;
+}
+</style>
+
+<div class="container-full">
+ 
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Middelfart KS visning</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+         <div id="demo">
+<p>Start dato: <input type="text" id="min"></p>
+<p>Slut dato: <input type="text" id="max"></p>
+<table id="example" cellspacing="0" width="100%">
+     <thead>
+        <tr>
+          <th>Adresse</th>
+          <th>Ejendoms-nr.</th>
+          <th>Bygnings-nr.</th>
+          <th>Bevaring</th>
+          <th>KS</th>
+          <th>Registrator</th>
+          <th>Dato</th>
+          <th>Link</th>
+        </tr>
+     </thead>
+</table>    
+</div>
+      </div>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-2.1.3.min.js">&lt;/script&gt;
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js">&lt;/script&gt;
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js">&lt;/script&gt;
+<script src='http://beta.mygeocloud.cowi.webhouse.dk/js/datatables/js/jquery.dataTables.min.js'>&lt;/script&gt;
+<script src='//cdn.datatables.net/tabletools/2.2.4/js/dataTables.tableTools.min.js'>&lt;/script&gt;
+
+<script src='//cdn.datatables.net/responsive/1.0.6/js/dataTables.responsive.js'>&lt;/script&gt;
+
+<script src='http://beta.mygeocloud.cowi.webhouse.dk/apps/custom/datatables/ks-visning.js'>&lt;/script&gt;
