@@ -10,7 +10,13 @@ $(window).load(function() {
     'ajax': 
       {
         url:'http://beta.mygeocloud.cowi.webhouse.dk/apps/custom/datatables/jsonp.php',
-        'dataType':'jsonp'
+        'dataType':'jsonp',
+        'data': function (aoData) {
+          aoData.min = $('#min').val();
+          aoData.max = $('#max').val();
+          console.log("values are read")
+        }
+
       },
     'columnDefs': 
     [
@@ -29,6 +35,15 @@ $(window).load(function() {
           }
         },
           "targets": 4
+      },
+      {
+        "render": function (data, type, row) {
+          var dateArray = row[6].split(".");
+
+          return dateArray[2] + "/" + dateArray[1] + "/" + dateArray[0];
+
+        },
+          "targets": 6
       }
     ],
     "dom": 'T<"clear">lfrtip',
@@ -42,10 +57,10 @@ $(window).load(function() {
       null,
       null,
       { "sSearch": "0"},
-      null,
-      { "sSearch": "2015"}
+      null//,
+      //{ "sSearch": "2015"}
     ],
-    responsive: true
+    'responsive': true
   }); 
   
   $('#example thead th').each( function () {
@@ -61,37 +76,49 @@ $(window).load(function() {
     if (title=="Bevaring"){
       $(this).html( '<select><option value="">Alle</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option></select><br/>'+title );
     }
-    if (title=="Dato"){
-      $(this).html(  '<input type="text" placeholder="Søg" value="2015" /><br/>'+title  );
-    }
+    // if (title=="Dato"){
+    //   $(this).html(  '<input type="text" placeholder="Søg" value="2015" /><br/>'+title  );
+    // }
   });
  
   // DataTable
-  var table = $('#example').DataTable();
+  var tableInstance = $('#example').DataTable();
 
   // Apply the search
-  table.columns().eq( 0 ).each( function ( colIdx ) {
-    $( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
-      table
+  tableInstance.columns().eq( 0 ).each( function ( colIdx ) {
+    $( 'input', tableInstance.column( colIdx ).header() ).on( 'keyup change', function () {
+      tableInstance
         .column( colIdx )
         .search( this.value )
         .draw();
     } );
 
-    $( 'select', table.column( colIdx ).header() ).on( 'change', function () {
-      table
+    $( 'select', tableInstance.column( colIdx ).header() ).on( 'change', function () {
+      tableInstance
         .column( colIdx )
         .search( this.value )
         .draw();
     } );
 
-    $('input', table.column(colIdx).header()).on('click', function(e) {
+    $('input', tableInstance.column(colIdx).header()).on('click', function(e) {
         e.stopPropagation();
     });
 
-    $('select', table.column(colIdx).header()).on('click', function(e) {
+    $('select', tableInstance.column(colIdx).header()).on('click', function(e) {
         e.stopPropagation();
     });
+  });
+
+  $(function() {
+    $( "#min" ).datepicker({ dateFormat: 'yy/mm/dd' });
+  });
+
+  $(function() {
+    $( "#max" ).datepicker({ dateFormat: 'yy/mm/dd' });
+  });
+
+  $( "#max, #min" ).on("change keyup blur", function () {
+    tableInstance.draw();
   });
 
   $("#example_filter").hide();
