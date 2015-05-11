@@ -1,0 +1,506 @@
+<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyA-DSPlhVi52zBadpyTRa4cOtSr6WKDOgA&sensor=false'>&lt;/script&gt;
+
+<link href="http://beta.mygeocloud.cowi.webhouse.dk/js/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="http://beta.mygeocloud.cowi.webhouse.dk/js/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+<style>
+    .attr-table1 {
+        background-color: silver;
+    }
+    .attr-table2 {
+        background-color: white;
+    }
+    .attr-table1 td, .attr-table2 td {
+        padding: 5px;
+    }
+    img {
+        max-width: none
+    }
+    .table tr td {
+        font-size: 8pt;
+        padding: 0px;
+        padding-right: 5px
+    }
+    .pict-table1 {
+        background-color: silver;
+    }
+    .pict-table2 {
+        background-color: white;
+    }
+    .pict-table1 td, .pict-table2 td {
+        padding: 5px;
+    }
+    img {
+        max-width: none
+    }
+    .table tr td {
+        font-size: 8pt;
+        padding: 0px;
+        padding-right: 5px
+    }
+.bold{
+  font-weight:bold;
+}
+
+</style>
+<script type="text/javascript" src="http://randers-kp.cowi.webhouse.dk/js/jquery.js">&lt;/script&gt;
+<script type="text/javascript" src="http://alpha.mygeocloud.cowi.webhouse.dk/api/v1/js/api.js">&lt;/script&gt;
+
+<script type="text/html" id="template">
+    <table class="table table-striped">
+    <tr>
+    <h5>Oplysninger</h5>
+    </tr>
+    <%
+    for (var key in attributes) {
+    if (this.attributes[key]!==null && this.attributes[key]!==undefined && this.attributes[key]!=='' && this.attributes[key]!=='0'  && this.attributes[key]!=='01.01.1970') {
+    %>
+
+    <tr><td ><%= attributes[key] %></td><td><%= this.attributes[key] %></td></tr>
+
+    <%
+    }
+    }
+
+    %>
+
+    </table>
+&lt;/script&gt;
+
+
+
+<script type="text/html" id="templatepict">
+    <table class="table table-striped">
+    <tr>
+    <h5>Billeder fra offentlig vej</h5>
+    </tr>
+    <tr>
+
+    <% if (this.attributes['assets3']){
+
+    for(i=0; i<this.attributes['assets3'].split(",").length;i++) {
+        var imagePath = this.attributes['assets3'].split(",")[i].split("-")[1];%>
+        <div style="margin-top:10px"> <a target="_blank" href="http://mobreg.cowi.webhouse.dk/mobiledata/images/<%= imagePath %>/<%= this.attributes['assets3'].split(",")[i] %>"><img class="img-rounded" style="width:450px" src="/scripts/formsbackend.php?Mode=getThumb&filename=<%= this.attributes['assets3'].split(",")[i] %>"/></a></div>
+        
+    <%} 
+    }
+    else {%>
+         <div><img class="img-rounded" style="width:370px" src="http://geodemo.cowi.webhouse.dk/kortbrowser/rudersdalbilleder/0_intet_foto_aaa.JPG"/></div>
+    <%}
+    %>
+
+
+
+    </tr>
+    <tr><h5>Øvrige billeder</h5>
+    </tr>
+    <tr>
+
+    <%
+
+    if (this.attributes['assets4']){
+
+        for(i=0; i<this.attributes['assets4'].split(",").length;i++) {
+        var imagePath = this.attributes['assets4'].split(",")[i].split("-")[1];%>
+        <div style="margin-top:10px"> <a target="_blank" href="http://mobreg.cowi.webhouse.dk/mobiledata/images/<%= imagePath %>/<%= this.attributes['assets4'].split(",")[i] %>"><img class="img-rounded" style="width:450px" src="/scripts/formsbackend.php?Mode=getThumb&filename=<%= this.attributes['assets4'].split(",")[i] %>"/></a></div>
+
+        <%}
+
+        }
+        else {}
+    if (this.attributes['assets5']){
+
+        for(i=0; i<this.attributes['assets5'].split(",").length;i++) {
+        var imagePath = this.attributes['assets5'].split(",")[i].split("-")[1];%>
+        <div style="margin-top:10px"> <a target="_blank" href="http://mobreg.cowi.webhouse.dk/mobiledata/images/<%= imagePath %>/<%= this.attributes['assets5'].split(",")[i] %>"><img class="img-rounded" style="width:450px" src="/scripts/formsbackend.php?Mode=getThumb&filename=<%= this.attributes['assets5'].split(",")[i] %>"/></a></div>
+
+        <%}
+
+        }
+        else {}
+        %>
+
+
+    </tr>
+
+    </table>
+
+
+
+&lt;/script&gt;
+
+
+
+<script>
+ var attributesks = {
+        "ansvarlig" : "Ansvarlig",
+        "kvalitetsikret" : "Kvalitetssikret?",
+        "noegle" : "Nøgle",
+        "link" : "Link"
+    }
+    var attributespict = {
+        "adresse" : "Adresse",
+        "bevaring" : "Bevaringsværdi",
+        "bevaring_kommentar" : "Kommentar",
+        "bebyggelsesmiljoe_fritliggende" : "Miljø på fritliggende ejendom"
+    }
+
+    var attributes = {
+        "adr_husnr_postnr" : "Adresse",
+        "bygningsnummer" : "Bygningsnummer",
+        "ejendomsnummer" : "Ejendomsnummer",
+        "matrikel" : "Matrikelnummer",
+        "ejerlav" : "Ejerlav",
+        "opfoerelsesaar" : "Opførelsesår",
+        "aendringsaar" : "Ombygningsår",
+        "ydervaeg_kode" : "Vægmateriale",
+        "tag_kode" : "Tagmateriale",
+        "bebyggetareal" : "Bebygget areal",
+        "anvendelse" : "Bygningsanvendelse",
+        "date" : "Registreringsdato",
+        "registrator" : "Registrator",
+        "aendring" : "Ændring",
+        "noter" : "Registreringsnote",
+        "aendret_opfoerelsesaar" : "Ændret opførelsesår",
+        "aendr_opf_praecision" : "Præcision",
+        "aendret_anvendelse" : "Ændret anvendelse",
+        "aendret_vaegmateriale" : "Ændret facademateriale",
+        "aendret_tagmateriale" : "Ændret tagdækning",
+"objekt": "Objekt",
+"komplekstype":"Komplekstype",        
+"betegnelse" : "Betegnelse",
+"bygn_stilart1" : "Stilart1",
+"bygn_stilart2" : "Stilart2",
+"bygn_stilart3" : "Stilart3",
+        "arkitektur" : "Arkitektur",
+        "arkitektur_kommentar" : "Kommentar",
+        "kulturhistorie" : "Kulturhistorie",
+        "kulturhistorie_kommentar" : "Kommentar",
+        "miljoevaerdi" : "Miljømæssig værdi",
+        "miljoevaerdi_kommentar" : "Kommentar",
+        "originalitet" : "Originalitet",
+        "originalitet_kommentar" : "Kommentar",
+        "tilstand" : "Tilstand",
+        "tilstand_kommentar" : "Kommentar",
+        "bevaring" : "Bevaringsværdi",
+        "bevaring_kommentar" : "Kommentar",
+        "bygningsbeskrivelse_folger" : "Bygningsbeskrivelse",
+        "bygn_hovedplan1" : "Hovedplan1",
+        "bygn_hovedplan2" : "Hovedplan2",
+        "bygn_hovedplan3" : "Hovedplan3",
+        "bygn_sokkel1" : "Sokkel1",
+        "bygn_sokkel2" : "Sokkel2",
+        "bygn_sokkel3" : "Sokkel3",
+        "bygn_ydermur1" : "Ydermur1",
+        "bygn_ydermur2" : "Ydermur2",
+        "bygn_ydermur3" : "Ydermur3",
+        "bygn_tagkonstruktion1" : "Tagkonstruktion1",
+        "bygn_tagkonstruktion2" : "Tagkonstruktion2",
+        "bygn_tagkonstruktion3" : "Tagkonstruktion3",
+        "bygn_gavl1" : "Gavlkonstruktion1",
+        "bygn_gavl2" : "Gavlkonstruktion2",
+        "bygn_gavl3" : "Gavlkonstruktion3",
+        "bygn_kviste1" : "Kviste1",
+        "bygn_kviste2" : "Kviste2",
+        "bygn_kviste3" : "Kviste3",
+        "bygn_gesims1" : "Gesims1",
+        "bygn_gesims2" : "Gesims2",
+        "bygn_gesims3" : "Gesims3",
+        "bygn_doere1" : "Døre/porte1",
+        "bygn_doere2" : "Døre/porte2",
+        "bygn_doere3" : "Døre/porte3",
+        "bygn_vinduer1" : "Vinduer1",
+        "bygn_vinduer2" : "Vinduer2",
+        "bygn_vinduer3" : "Vinduer3",
+        "bygn_bygningsdele1" : "Bygningsdele1",
+        "bygn_bygningsdele2" : "Bygningsdele2",
+        "bygn_bygningsdele3" : "Bygningsdele3",
+        "bygn_udsmykning1" : "Udsmykning1",
+        "bygn_udsmykning2" : "Udsmykning2",
+        "bygn_udsmykning3" : "Udsmykning3",
+        "forhold_andre_bygn" : "Bem. vedr. forh. t. andre bygninger",
+"omgivelser1" : "Omgivelser1",
+"omgivelser2" : "Omgivelser2",
+"omgivelser3" : "Omgivelser3",
+        "omgivelser_bemaerkninger" : "Bemærkninger vedr. omgivelser",
+        "oprindelig_anvendelse" : "Oprindelig anvendelse",
+        "bebyggelsesmiljoe" : "Bebyggelsesmiljø",
+        "crud_id" : "Bygningspolygon"
+//"ks_person" : "Kontrolleret af",
+//"kontrolleret" : "Kontrolleret"
+    }
+
+    var rules = {
+        rules : [new OpenLayers.Rule({
+            filter : new OpenLayers.Filter.Comparison({
+                type : OpenLayers.Filter.Comparison.EQUAL_TO,
+                property : "anvgen",
+                value : '11'
+            }),
+            symbolizer : {
+                fillColor : "#c66100",
+                fillOpacity : 0.3,
+                strokeColor : "#c66100"
+            }
+        }), new OpenLayers.Rule({
+            filter : new OpenLayers.Filter.Comparison({
+                type : OpenLayers.Filter.Comparison.EQUAL_TO,
+                property : "anvgen",
+                value : '21'
+            }),
+            symbolizer : {
+                fillColor : "#ff615a",
+                fillOpacity : 0.3,
+                strokeColor : "#ff615a"
+            }
+        }), new OpenLayers.Rule({
+            filter : new OpenLayers.Filter.Comparison({
+                type : OpenLayers.Filter.Comparison.EQUAL_TO,
+                property : "anvgen",
+                value : '31'
+            }),
+            symbolizer : {
+                fillColor : "#6bffff",
+                fillOpacity : 0.3,
+                strokeColor : "#6bffff"
+            }
+        })]
+    };
+    var styleMap = new OpenLayers.StyleMap({
+        /*"default": new OpenLayers.Style({
+         fillColor: "#ffffff",
+         fillOpacity: 0.0,
+         strokeColor: "#FF0000",
+         strokeWidth: 2,
+         graphicZIndex: 3
+         },rules
+         ),*/
+        "default" : new OpenLayers.Style({
+
+            fillOpacity : 0.0,
+            strokeOpacity : 0.0
+
+        }),
+        "temporary" : new OpenLayers.Style({
+            fillColor : "#ffffff",
+            fillOpacity : 0.0,
+            strokeColor : "#FF0000",
+            strokeOpacity : 1.0,
+            strokeWidth : 2,
+            graphicZIndex : 3
+        }),
+        "select" : new OpenLayers.Style({
+            fillColor : "#ff0000",
+            fillOpacity : 0.5,
+            strokeColor : "#ff0000",
+            strokeOpacity : 1.0,
+            strokeWidth : 2,
+            zIndex : 10000
+        })
+    });
+
+var cloud, store;
+
+    $(window).load(function() {
+
+        cloud = new mygeocloud_ol.map("map", "mobreg");
+
+        var href = "/dk/middelfart/formular.htm?iFormID=115770112366019&rowid=" + mygeocloud_ol.urlVars.rowid;
+        cloud.setBaseLayer(cloud.addGoogleHybrid());
+        //console.log(href);
+        $("#editlink").attr("href", href);
+        cloud.addGoogleHybrid()
+        //cloud.addTileLayers(["kommuneplan.kpplandk2_view"],{singleTile:true});
+        store = new mygeocloud_ol.geoJsonStore("mobreg", {
+            //$("#map").html("<button id="knapstortkort" class="btn btn-mini" type="button">Vis stort kort</button>");
+            //$("#map").html("<button class="btn btn-mini" type="button">Zoom til kommune</button>");
+        });
+
+
+        cloud.addGeoJsonStore(store);
+        cloud.addControl(
+        //definere at objektet kan vælges
+        new OpenLayers.Control.SelectFeature(store.layer, {
+            hover : true,
+            highlightOnly : true,
+            clickout : true,
+            renderIntent : "temporary",
+            //definere info boks
+            eventListeners : {
+                beforefeaturehighlighted : function(e) {
+                },
+                featurehighlighted : function(e) {
+                    feature = e.feature;
+                    $("#label").show();
+                    $("#label").html("<div style='font-size:.8em'>" + feature.attributes.adresse + "</div>");
+                },
+                featureunhighlighted : function(e) {
+                    feature = e.feature;
+                    //$("#label").hide();
+                }
+            }
+        }));
+        var ctrl = cloud.addControl(
+        //definere at der linkes videre
+        new OpenLayers.Control.SelectFeature(store.layer, {
+            hover : false,
+            renderIntent : "select",
+            onSelect : function(e) {
+                //console.log(e);
+                $('#pict').empty();
+                $('#attr').empty();
+                //console.log(e);
+
+
+
+                $('#attr').append($('#template').jqote(e));
+
+var content = $('#attr').html();
+
+
+var str = content.replace(/}@&amp;\+{/gi, ', ');
+
+$('#attr').html(str);
+
+
+                $('#pict').append($('#templatepict').jqote(e));
+            },
+            onUnselect : function(feature) {
+            }
+        }));
+
+       store.sql = "select p.*,q.irowid as noegle,q.kvalitetsikret,q.ansvarlig from middelfart_save.middelfart_view as p left join middelfart_save.tforms115770112474059_join as q on q.noegle=(p.kommunenummer || '-' || p.ejendomsnummer || '-' || p.bygningsnummer) WHERE p.irowid='" + mygeocloud_ol.urlVars.rowid+"'";
+
+
+
+//store.sql = "select * from public.middelfart_view WHERE irowid=" + mygeocloud_ol.urlVars.rowid;
+         store.load();
+        store.onLoad = function() {
+            //console.log(store.geoJSON)
+            cloud.zoomToExtentOfgeoJsonStore(store);
+cloud.map.setCenter(cloud.getCenter(),17);
+            ctrl.select(store.layer.features[0]);
+
+//Find andre versioner af sagen
+
+
+if(store.geoJSON.features[0].properties.iparentrowid != -1){
+storeVersioner.sql = "select irowid, to_timestamp(registreringsdato) as dato,vcversion,the_geom from middelfart_save.middelfart_view where irowid="+ mygeocloud_ol.urlVars.rowid + " or iparentrowid=" + mygeocloud_ol.urlVars.rowid + " or irowid=" + store.geoJSON.features[0].properties.iparentrowid + " or iparentrowid=" + store.geoJSON.features[0].properties.iparentrowid  + " order by vcversion desc";
+}else{
+storeVersioner.sql = "select irowid, to_timestamp(registreringsdato) as dato,vcversion,the_geom from middelfart_save.middelfart_view where irowid="+ mygeocloud_ol.urlVars.rowid + " or iparentrowid=" + mygeocloud_ol.urlVars.rowid + " order by vcversion desc";
+
+}
+
+  storeVersioner.reset();
+  storeVersioner.load();
+
+        }
+
+  storeVersioner = new mygeocloud_ol.geoJsonStore("mobreg",{});
+  cloud.addGeoJsonStore(storeVersioner);
+  
+  storeVersioner.onLoad = function () {
+
+
+if(storeVersioner.geoJSON.features != undefined) {
+  if(storeVersioner.geoJSON.features.length>0) {
+  var htmlOutput = "";
+  storeVersioner.geoJSON.features.forEach(function (entry) {
+
+var bold= "";
+if(entry.properties.irowid==mygeocloud_ol.urlVars.rowid){
+bold="bold";
+}
+    htmlOutput += "<a class='" + bold + "' href='http://mobreg.cowi.webhouse.dk/dk/middelfart/ks/intern_visning_ks.htm?rowid=" + entry.properties.irowid + "'>" + entry.properties.vcversion + " " + entry.properties.dato + "</a><br/>";
+  });
+
+  $("#andreversioner").html(htmlOutput);
+ 
+  }
+}
+
+
+  };
+
+
+    okChange(1);
+        
+        
+        
+
+
+
+    });
+
+var okChange = function(showState) {
+        console.log(mygeocloud_ol.urlVars.rowid);
+        console.log(showState);
+            var request = $.ajax({
+                dataType : 'jsonp',
+                data : {id : mygeocloud_ol.urlVars.rowid, show : showState},
+                jsonp : 'jsonp_callback',
+                url : 'http://beta.mygeocloud.cowi.webhouse.dk/apps/custom/save/controller/middelfartsave.php',
+                success : function(response) {
+                    if(response.status==1)
+                    {
+                        $('#ok').prop('checked', true);
+                    }
+                    else
+                    {
+                        $('#ok').prop('checked', false);
+                    }
+                }
+            });
+        
+        }
+
+&lt;/script&gt;
+
+<div class="row-fluid">
+    <div class="span10 offset1">
+
+        <div class="row-fluid">
+            <div class="span10">
+                <h3 style="color:#233978">SAVE registrering</h3>
+
+                <a id="editlink" href="" class="btn btn-mini btn-primary">Ret i registrering</a>
+<br/><br/>
+<a href="http://mobreg.cowi.webhouse.dk/dk/middelfart/ks/ks-visning-version-2.htm" class="btn btn-mini">KS side</a> &nbsp;Kvalitetssikret <input type='checkbox' name='ok' id='ok' onClick='okChange(0);'>
+
+            </div>
+            <div class="span2">
+                <img style="width:160px;float:right" src="http://mobreg.cowi.webhouse.dk/images/middelfart.gif">
+            </div>
+        </div>
+
+        <div class="row-fluid">
+            <div id="mapContainer" class="span3">
+                          <div id="map" class="span12" style="height:300px;border:0px solid #000000;position:relative;float:none;">
+                            <h5>Kort</h5>
+              </div>
+                          <div id="versioner" style="margin-top:40px;position:relative;float:none;">
+                            <h5>Versioner</h5>
+<div id="andreversioner">
+
+</div>
+                          </div>
+                        </div>
+
+            <div id="attr" class="span5"></div>
+            <div id="pict" class="span4">
+
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div  class="span12">
+                <p>
+                    COWI A/S - ODEUM Eplan app
+                </p>
+                </br>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript" src="http://beta.mygeocloud.cowi.webhouse.dk/js/jqote2/jquery.jqote2.js">&lt;/script&gt;
