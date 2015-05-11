@@ -1,19 +1,3 @@
-
-var config = {
-  db: "mobreg",
-  schema: "middelfart_save",
-  infotable: "middelfart_view_unique",
-  linkurl: "test",
-  zoomToStore: true,
-  tileLayers: ["middelfart_save.tforms115770112366019_join"],
-  tileLayersLoggedIn: ["middelfart_save.tforms115770112366019_join"],
-  extent: [1069292.6004777, 7428392.5300405, 1128149.1122491, 7470432.8955915],
-  komKode: 410,
-  bgLayers: [
-    {"layer": "rudersdal_save.kms_skaermkort", "name": "kms", "bg": true},
-  ]
-};
-
 var SAVE = (function () {
   "use strict";
 
@@ -134,9 +118,9 @@ var SAVE = (function () {
         store.load();
 
         store.onLoad = function() {
-          if(store.geoJSON.features[0].properties.afstand>defaults.maxClickDist)
+          if(store.geoJSON.features[0].properties.afstand > defaults.maxClickDist)
           {
-            alert("Advarsel: Ingen bygning er valgt. Der er "+store.geoJSON.features[0].properties.afstand+"m til nærmeste bygning. Du skal klikke højest "+defaults.maxClickDist+"m fra en bygning.");
+            alert("Advarsel: Ingen bygning er valgt. Der er " + store.geoJSON.features[0].properties.afstand + "m til nærmeste bygning. Du skal klikke højest "+defaults.maxClickDist+"m fra en bygning.");
           }else{
             ctrl.select(store.layer.features[0]);
           }
@@ -212,6 +196,8 @@ var SAVE = (function () {
       hover : false,
       renderIntent : "select",
       onSelect : function (e) {
+        console.log("test34");
+
         var content,
             str;
 
@@ -231,18 +217,28 @@ var SAVE = (function () {
     };
     
     store2.onLoad = function (){
-      var html ="",
-        store2_counter = 0;
       
-      $.each(store2.geoJSON.features, function() 
-        { 
-        html += "<a style='font-size:8pt;' href='javascript:ctrl2.unselectAll();ctrl2.select(store2.layer.features[" + store2_counter + "]);'>" + this.properties.vejnavn + " " + this.properties.husnr + ", bygning " + this.properties.bygningsnummer + "</a><br/>";
-        store2_counter++;
-        }
-      );
-
+      var store2_counter = 0;
+      
       $("#ekstra .content").empty();
-      $("#ekstra .content").html(html);
+
+      $.each(store2.geoJSON.features, function() {
+        var html ="";
+        var id = this.properties.kommunenummer + "-" + this.properties.ejendomsnummer + "-" + this.properties.bygningsnummer;
+
+        html += "<a id='" + id + "' style='font-size:8pt;' href='#'>" + this.properties.vejnavn + " " + this.properties.husnr + ", bygning " + this.properties.bygningsnummer + "</a><br/>";
+        $("#ekstra .content").append(html);
+
+        (function (i) {
+          $("a#" + id).on("click", function () {
+            console.log(i);
+            ctrl2.unselectAll();
+            ctrl2.select(store2.layer.features[i]);
+          });
+        })(store2_counter);
+        
+        store2_counter++;
+      });
     };
 
     $("#streetname").autocompleteAddress({
@@ -315,7 +311,8 @@ var SAVE = (function () {
   };
 
   return {
-    init:init
+    init:init,
+    attributes,attributes
   };
 
 })();
