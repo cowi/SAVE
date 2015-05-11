@@ -53,7 +53,7 @@ $(window).load(function() {
     var title = $('#example thead th').eq( $(this).index() ).text();
     
     if (title != "Link" && title!="KS" && title!="Bevaring" && title!="Dato"){
-      $(this).html( '<input type="text" placeholder="SÃ¸g" /><br/>'+title );
+      $(this).html( '<input type="text" placeholder="Søg" /><br/>'+title );
     }
     if (title=="KS"){
       $(this).html( '<select><option value=""></option><option value="1">Ja</option><option value="0" selected>Nej</option></select><br/>'+title );
@@ -62,7 +62,7 @@ $(window).load(function() {
       $(this).html( '<select><option value="">Alle</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option></select><br/>'+title );
     }
     if (title=="Dato"){
-      $(this).html(  '<input type="text" placeholder="SÃ¸g" value="2015" /><br/>'+title  );
+      $(this).html(  '<input type="text" placeholder="Søg" value="2015" /><br/>'+title  );
     }
   });
  
